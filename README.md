@@ -188,16 +188,7 @@ This standalone approach is perfect for development, testing, or smaller deploym
 - Implement user authentication and role-based access control
 - Add predictive analytics for consumption forecasting
 - Integrate with Grafana for more advanced monitoring capabilities
-
-## License
-
-MIT License
-
-## Acknowledgments
-
-- This project was developed as a demonstration of Kubernetes capabilities for data processing pipelines
-- Inspired by real-world energy monitoring systems used by utility companies
-
+  
 ---
 
 For more information, contact me through [this link](https://fourat.pythonanywhere.com/contact.html)
