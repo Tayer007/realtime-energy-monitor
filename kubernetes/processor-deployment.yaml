@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: data-processor
-        image: fourat98/energy-data-processor:latest
+        image: ${YOUR_USERNAME}/energy-data-processor:latest
         imagePullPolicy: Always
         env:
         - name: RABBITMQ_HOST
