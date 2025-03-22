@@ -206,7 +206,17 @@ spec:
 - Implement user authentication and role-based access control
 - Add predictive analytics for consumption forecasting
 - Integrate with Grafana for more advanced monitoring capabilities
-  
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+This means:
+- You are free to use, modify, and distribute this software
+- If you distribute modified versions, you must make your source code available
+- Any derivative works must also be licensed under GPL-3.0
+
+For more details, see the [LICENSE](LICENSE) file in this repository or visit [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).  
 ---
 
 For more information, contact me through [this link](https://fourat.pythonanywhere.com/contact.html)
