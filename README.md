@@ -181,6 +181,23 @@ If you prefer a simpler setup without Kubernetes, you can run each component dir
 
 This standalone approach is perfect for development, testing, or smaller deployments where Kubernetes might be overkill.
 
+## Setup Instructions
+
+### Important: Update Docker Image References
+
+Before deploying to Kubernetes, you must update the Docker image references in the following deployment files to use your own Docker Hub username:
+
+- `kubernetes/generator-deployment.yaml`
+- `kubernetes/processor-deployment.yaml` 
+- `kubernetes/dashboard-deployment.yaml`
+
+Look for lines like these in each file and replace `${YOUR_USERNAME}` with your actual Docker Hub username:
+
+```yaml
+spec:
+  containers:
+  - name: data-generator
+    image: ${YOUR_USERNAME}/energy-data-generator:latest
 ## Potential Enhancements
 
 - Replace SQLite with a more robust database like PostgreSQL or TimescaleDB
