@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dashboard
-        image: fourat98/energy-dashboard:latest
+        image: ${YOUR_USERNAME}/energy-dashboard:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
