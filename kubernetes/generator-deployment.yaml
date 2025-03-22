@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: data-generator
-        image: fourat98/energy-data-generator:latest
+        image: ${YOUR_USERNAME}/energy-data-generator:latest
         imagePullPolicy: Always
         env:
         - name: RABBITMQ_HOST
