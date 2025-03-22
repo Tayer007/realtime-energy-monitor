@@ -198,6 +198,7 @@ spec:
   containers:
   - name: data-generator
     image: ${YOUR_USERNAME}/energy-data-generator:latest
+```
 ## Potential Enhancements
 
 - Replace SQLite with a more robust database like PostgreSQL or TimescaleDB
