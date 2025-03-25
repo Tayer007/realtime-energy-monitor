@@ -49,7 +49,7 @@ The system consists of the following components:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/energy-data-pipeline.git
+   git clone https://github.com/Tayer007/realtime-energy-monitor.git
    cd energy-data-pipeline
    ```
 
