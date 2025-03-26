@@ -106,7 +106,7 @@ const Dashboard = () => {
       )}
 
       <footer>
-        <small>Copyright &copy; 2025 Your Name. Licensed under GPL-3.0.</small>
+        <small>Copyright &copy; 2025 Fourat Garrach. Licensed under GPL-3.0.</small>
       </footer>
     </Container>
   );
