@@ -1,12 +1,12 @@
 # Energy Data Processing Pipeline
 
-A scalable data processing pipeline for energy consumption data analysis, visualization, and reporting. Can be deployed on Kubernetes or as a standalone Flask application.
+A scalable data processing pipeline for energy consumption data analysis, visualization, and reporting. Can be deployed on Kubernetes or as a standalone Flask application, with both Flask and React dashboard options.
 
 ![Energy Data Dashboard](dashboard_screenshot.png)
 
 ## Overview
 
-This project simulates a real-world energy data processing system that could be used by utility companies like E.ON to monitor, analyze, and visualize energy consumption patterns. The system processes energy consumption data from multiple households in real-time, providing insights through an interactive dashboard.
+This project simulates a real-world energy data processing system that could be used by utility companies like E.ON to monitor, analyze, and visualize energy consumption patterns. The system processes energy consumption data from multiple households in real-time, providing insights through interactive dashboards.
 
 ## Architecture
 
@@ -16,14 +16,18 @@ The system consists of the following components:
 - **RabbitMQ**: Message queue for reliable data transfer between components
 - **Data Processor**: Analyzes incoming data with horizontal scaling capabilities
 - **Persistent Storage**: Stores processed data for historical analysis
-- **Dashboard**: Web UI with real-time visualization and data export capabilities
+- **Dashboards**: 
+  - Flask-based web UI with visualization capabilities
+  - React-based modern interactive dashboard with enhanced features
 
 ## Features
 
 - **Scalable Processing**: Horizontal Pod Autoscaler automatically scales based on workload
 - **Real-time Analytics**: Processes and visualizes data as it arrives
-- **Interactive Dashboard**: Multiple chart types, time range selection, and filtering options
-- **Dark/Light Mode**: User-friendly interface with theme support
+- **Interactive Dashboards**: 
+  - Multiple chart types, time range selection, and filtering options
+  - Choice between Flask-based or React-based UI
+- **Dark/Light Mode**: User-friendly interface with theme support (React dashboard)
 - **Data Export**: Generate reports in CSV and PDF formats
 - **Persistent Storage**: Historical data is retained across pod restarts
 
@@ -32,6 +36,7 @@ The system consists of the following components:
 - **Kubernetes**: Container orchestration
 - **Docker**: Containerization
 - **Python**: Backend processing with Flask
+- **React**: Modern frontend framework for enhanced UI
 - **RabbitMQ**: Message queuing
 - **SQLite**: Data storage
 - **Chart.js**: Data visualization
@@ -64,11 +69,39 @@ The system consists of the following components:
    ./deploy.bat
    ```
 
-4. **Access the dashboard**
+4. **Access the Flask dashboard**
    ```bash
    kubectl port-forward svc/dashboard 8081:80
    ```
    Then open your browser at http://localhost:8081
+
+5. **Deploy and access the React dashboard (optional)**
+
+   The React dashboard communicates with the Flask backend via CORS. Ensure the Flask dashboard is running and accessible before deploying the React dashboard.
+   
+   #### Setup React Dashboard from Scratch:
+   
+   ```bash
+   # Create React app - make sure to name it react-dashboard to avoid conflicts
+   npx create-react-app react-dashboard
+   cd react-dashboard
+   
+   # Install necessary dependencies
+   npm install axios chart.js react-chartjs-2 bootstrap react-bootstrap react-icons jspdf jspdf-autotable
+   
+   # Copy React component files from the repository
+   # Replace files in src/ with the ones from the repository's react-dashboard/src/ directory
+   # Create the Dockerfile and nginx.conf in the root of the react-dashboard directory
+   
+   # Build and deploy (after setting up all files)
+   ./build-react.bat
+   ./deploy-react.bat
+   kubectl port-forward svc/react-dashboard 3000:80
+   ```
+   
+   Then open your browser at http://localhost:3000
+   
+   **Important**: The React dashboard requires the Flask backend to be running and accessible. It retrieves data via API calls to the Flask server, so make sure port forwarding is active for the Flask dashboard (on port 8081) before accessing the React dashboard.
 
 ## Components Breakdown
 
@@ -90,14 +123,24 @@ Analyzes incoming energy data, calculating metrics such as:
 
 The processor automatically scales based on workload using Kubernetes' Horizontal Pod Autoscaler.
 
-### Dashboard
+### Dashboards
 
+#### Flask Dashboard
 Interactive web UI built with Flask, Bootstrap, and Chart.js providing:
 - Real-time consumption monitoring
 - Multiple visualization options (line, bar, area charts)
 - Time range filtering
-- Light/dark theme support
-- Data export in CSV and PDF formats
+- Data export capabilities
+
+#### React Dashboard
+Modern single-page application with enhanced features:
+- Real-time data visualization
+- Interactive chart types (line, bar, area)
+- Dark/light theme support
+- Advanced filtering options
+- CSV and PDF export functionality
+
+The React dashboard communicates with the Flask backend through API calls, utilizing CORS (Cross-Origin Resource Sharing) to handle cross-domain requests. This architecture separates frontend and backend concerns, allowing for a more maintainable and scalable application.
 
 ## Project Structure
 
@@ -111,20 +154,33 @@ energy-data-pipeline/
 │   ├── app.py
 │   ├── Dockerfile
 │   └── requirements.txt
-├── dashboard/              # Web UI component
+├── dashboard/              # Flask Web UI component
 │   ├── app.py
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── templates/
 │       └── index.html
+├── react-dashboard/        # React Web UI component
+│   ├── public/
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── contexts/       # Context providers
+│   │   ├── services/       # API services
+│   │   ├── App.js
+│   │   └── App.css
+│   ├── Dockerfile
+│   └── nginx.conf
 ├── kubernetes/             # Kubernetes configuration
 │   ├── dashboard-deployment.yaml
 │   ├── generator-deployment.yaml
 │   ├── persistent-volume.yaml
 │   ├── processor-deployment.yaml
-│   └── rabbitmq.yaml
+│   ├── rabbitmq.yaml
+│   └── react-dashboard-deployment.yaml
 ├── build-images.bat        # Script to build Docker images
 ├── deploy.bat              # Script to deploy to Kubernetes
+├── build-react.bat         # Script to build React Docker image
+├── deploy-react.bat        # Script to deploy React dashboard
 └── README.md
 ```
 
@@ -183,6 +239,30 @@ This standalone approach is perfect for development, testing, or smaller deploym
 
 ## Setup Instructions
 
+### React Dashboard Setup Details
+
+The React dashboard requires special attention during setup:
+
+1. **Flask Backend Dependency**: The React dashboard retrieves data from the Flask backend through API calls. Ensure the Flask backend is running and accessible before using the React dashboard.
+
+2. **CORS Configuration**: The Flask backend must have CORS enabled to accept requests from the React frontend. The Flask app should include:
+   ```python
+   from flask_cors import CORS
+   app = Flask(__name__)
+   CORS(app)  # Enable CORS for all routes
+   ```
+   
+   Make sure `flask-cors` is installed:
+   ```bash
+   pip install flask-cors
+   ```
+
+3. **API Configuration**: The React dashboard's API service (`src/services/api.js`) is configured to connect to the Flask backend at `http://localhost:8081/api` by default. If you're using a different port or host, update this configuration.
+
+4. **Development vs. Production**: 
+   - For development, you can run the React app with `npm start` and the Flask backend separately
+   - For production (Kubernetes), the nginx configuration handles proxying API requests to the Flask service
+
 ### Important: Update Docker Image References
 
 Before deploying to Kubernetes, you must update the Docker image references in the following deployment files to use your own Docker Hub username:
@@ -190,6 +270,7 @@ Before deploying to Kubernetes, you must update the Docker image references in t
 - `kubernetes/generator-deployment.yaml`
 - `kubernetes/processor-deployment.yaml` 
 - `kubernetes/dashboard-deployment.yaml`
+- `kubernetes/react-dashboard-deployment.yaml`
 
 Look for lines like these in each file and replace `${YOUR_USERNAME}` with your actual Docker Hub username:
 
@@ -199,6 +280,7 @@ spec:
   - name: data-generator
     image: ${YOUR_USERNAME}/energy-data-generator:latest
 ```
+
 ## Potential Enhancements
 
 - Replace SQLite with a more robust database like PostgreSQL or TimescaleDB
@@ -212,7 +294,8 @@ spec:
 Copyright (C) 2025 Fourat Garrach
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
-For more details, see the [LICENSE](LICENSE) file in this repository or visit [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).  
+For more details, see the [LICENSE](LICENSE) file in this repository or visit [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
 ---
 
 For more information, contact me through [this link](https://fourat.pythonanywhere.com/contact.html)
