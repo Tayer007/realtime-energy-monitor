@@ -2,7 +2,25 @@
 
 A scalable data processing pipeline for energy consumption data analysis, visualization, and reporting. Can be deployed on Kubernetes or as a standalone Flask application, with both Flask and React dashboard options.
 
-![Energy Data Dashboard](dashboard_screenshot.png)
+## Dashboard Screenshots
+
+### Dark Mode View
+![Dashboard - Dark Mode](images/dashboard_dark.jpg)
+
+### Light Mode View
+![Dashboard - Light Mode](images/dashboard_light.jpg)
+
+## System Architecture
+
+The system consists of interconnected components that work together to process and visualize energy consumption data:
+
+![System Architecture](images/system_architecture.png)
+
+## Kubernetes Deployment
+
+All components are containerized and deployed on Kubernetes, with horizontal scaling for data processors:
+
+![Kubernetes Deployment](images/kubernetes_deployment.png)
 
 ## Overview
 
@@ -125,22 +143,14 @@ The processor automatically scales based on workload using Kubernetes' Horizonta
 
 ### Dashboards
 
-#### Flask Dashboard
-Interactive web UI built with Flask, Bootstrap, and Chart.js providing:
+Interactive visualization interface with multiple views and themes:
 - Real-time consumption monitoring
 - Multiple visualization options (line, bar, area charts)
 - Time range filtering
-- Data export capabilities
+- Light/dark theme support
+- Data export capabilities (CSV/PDF)
 
-#### React Dashboard
-Modern single-page application with enhanced features:
-- Real-time data visualization
-- Interactive chart types (line, bar, area)
-- Dark/light theme support
-- Advanced filtering options
-- CSV and PDF export functionality
-
-The React dashboard communicates with the Flask backend through API calls, utilizing CORS (Cross-Origin Resource Sharing) to handle cross-domain requests. This architecture separates frontend and backend concerns, allowing for a more maintainable and scalable application.
+The dashboard communicates with the backend through API calls, utilizing CORS (Cross-Origin Resource Sharing) to handle cross-domain requests.
 
 ## Project Structure
 
