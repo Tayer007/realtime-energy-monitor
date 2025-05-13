@@ -14,13 +14,13 @@ A scalable data processing pipeline for energy consumption data analysis, visual
 
 The system consists of interconnected components that work together to process and visualize energy consumption data:
 
-![System Architecture](images/system_architecture.png)
+![System Architecture](images/architecture_diagramm.png)
 
 ## Kubernetes Deployment
 
 All components are containerized and deployed on Kubernetes, with horizontal scaling for data processors:
 
-![Kubernetes Deployment](images/kubernetes_deployment.png)
+![Kubernetes Deployment](images/kubernetes_dashboard.png)
 
 ## Overview
 
